@@ -1,4 +1,4 @@
-resource "google_compute_subnetwork" "private_new" {
+resource "google_compute_subnetwork" "private" {
   name          = "private-new"
   ip_cidr_range = "10.3.0.0/24"
   region        = var.region
