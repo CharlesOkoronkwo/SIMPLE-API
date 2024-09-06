@@ -15,7 +15,13 @@
 
 
 provider "google" {
-  project = "simple-api-434410"
-  region  = "us-central1"
-  impersonate_service_account = "gke-sa@simple-api-434410.iam.gserviceaccount.com"
+  project     = "simple-api-434410"
+  region      = "us-central1"
+  credentials = base64decode(var.google_credentials)
 }
+
+variable "google_credentials" {
+  description = "Base64 encoded service account key"
+  type        = string
+}
+
