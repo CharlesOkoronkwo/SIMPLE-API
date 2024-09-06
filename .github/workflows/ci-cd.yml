@@ -50,7 +50,7 @@ jobs:
 
       - name: Terraform Apply
         working-directory: terraform
-        run: terraform apply -auto-approve -var="google_credentials=${{ secrets.GOOGLE_CREDENTIALS }}"
+        run: terraform apply -auto-approve
 
 
   build-and-push:
