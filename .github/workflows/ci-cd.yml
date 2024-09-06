@@ -50,9 +50,7 @@ jobs:
 
       - name: Terraform Apply
         working-directory: terraform
-        run: |
-         gcloud auth application-default login
-         terraform apply -auto-approve 
+        run: terraform apply -auto-approve 
 
   build-and-push:
     name: Build and Push Docker Image
