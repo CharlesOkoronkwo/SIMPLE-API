@@ -50,9 +50,8 @@ jobs:
 
       - name: Terraform Apply
         working-directory: terraform
-        run: terraform apply -auto-approve
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: terraform apply -auto-approve -var="google_credentials=${{ secrets.GOOGLE_CREDENTIALS }}"
+
 
   build-and-push:
     name: Build and Push Docker Image
