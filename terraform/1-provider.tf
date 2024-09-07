@@ -13,7 +13,14 @@
 #     config_context = "minikube"
 # }
 
-
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = "6.1.0"
+    }
+  }
+}
 provider "google" {
   project     = "simple-api-434410"
   region      = "us-central1"
