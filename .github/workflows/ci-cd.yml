@@ -37,10 +37,12 @@ jobs:
     name: Provisioning Infrastructure
     runs-on: ubuntu-latest
     needs: setup
+    permissions:
+      id-token: 'write'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+        
       - name: List Files
         run: ls -la terraform
 
