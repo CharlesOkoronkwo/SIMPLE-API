@@ -27,7 +27,6 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -57,12 +56,19 @@ jobs:
           service_account: ${{ secrets.SA_EMAIL }}
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
     
-      - name: Terraform Apply
+      - name: Terraform Plan
+        id: plan
         working-directory: terraform
-        run: terraform apply -auto-approve
+        run: terraform plan -out=tfplan
         env: 
           GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
-
+        
+      - name: Apply Only If Changes Exist
+        working-directory: terraform
+        run: terraform apply -auto-approve tfplan
+        if: ${{ steps.plan.outputs.changes }} == 'true'
+        env: 
+          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
 
   build-and-push:
     name: Build and Push Docker Image
@@ -110,9 +116,17 @@ jobs:
           service_account: ${{ secrets.SA_EMAIL }}
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
           
-      - name: Deploy with Terraform
+      - name: Terraform Plan
+        id: plan
         working-directory: terraform
-        run: terraform apply -auto-approve
+        run: terraform plan -out=tfplan
+        env: 
+          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+        
+      - name: Apply Only If Changes Exist
+        working-directory: terraform
+        run: terraform apply -auto-approve tfplan
+        if: ${{ steps.plan.outputs.changes }} == 'true'
         env: 
           GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
 
@@ -137,18 +151,24 @@ jobs:
           service_account: ${{ secrets.SA_EMAIL }}
           workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
 
-      - name: Terraform Apply
+      - name: Terraform Plan
+        id: plan
         working-directory: kubernetes_resource
-        run: terraform apply -auto-approve
+        run: terraform plan -out=tfplan
         env: 
           GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
 
-
+      - name: Apply Only If Changes Exist
+        working-directory: kubernetes_resource
+        run: terraform apply -auto-approve tfplan
+        if: ${{ steps.plan.outputs.changes }} == 'true'
+        env: 
+          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
 
   verify:
     name: Verify Deployment
     runs-on: ubuntu-latest
-    needs: deploy
+    needs: Kubernetes-Workflow
     steps:
       - name: Test API Endpoint
         run: |
