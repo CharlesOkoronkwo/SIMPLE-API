@@ -18,7 +18,6 @@ jobs:
         with: 
            project_id: ${{ secrets.GCP_PROJECT_ID }}
            service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
-           install_components: 'gke_gcloud_auth_plugin'
            export_default_credentials: true
 
   deploy:
