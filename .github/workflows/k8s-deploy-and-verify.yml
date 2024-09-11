@@ -24,6 +24,11 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.6
+
   deploy:
     name: Deploy to Kubernetes
     runs-on: ubuntu-latest
@@ -33,21 +38,31 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
-      - name: Get GKE Credentials
-        run: |
-          echo "Listing gcloud configurations..."
-          gcloud config list
-          echo "Listing gcloud authentication accounts..."
-          gcloud auth list
-          echo "Getting GKE credentials..."
-          gcloud container clusters get-credentials simple-api --region us-central1 --project ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Deploy with Terraform to Kubernetes
+      - name: Terraform Init
         working-directory: kubernetes_resource
-        run: terraform init && terraform apply -auto-approve
-        env:
-          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ secrets.GOOGLE_OAUTH_ACCESS_TOKEN }}
+        run: terraform init
+      
+      - name: Get Access Token for Terraform
+        id: 'auth'
+        uses: google-github-actions/auth@v1
+        with:
+          service_account: ${{ secrets.SA_EMAIL }}
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          
+      - name: Terraform Plan
+        id: plan
+        working-directory: kubernetes_resource
+        run: terraform plan -out=tfplan
+        env: 
+          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+        
+      - name: Apply Only If Changes Exist
+        working-directory: kubernetes_resource
+        run: terraform apply -auto-approve tfplan
+        if: ${{ steps.plan.outputs.changes }} == 'true'
+        env: 
+          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
 
       - name: Get Kubernetes Service External IP
         id: get-service-ip
