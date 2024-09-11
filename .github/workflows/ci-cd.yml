@@ -96,10 +96,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
+        
+      - name: Terraform Init
+        working-directory: terraform
+        run: terraform init
+        
       - name: Deploy with Terraform
         working-directory: terraform
         run: terraform apply -auto-approve
+        env: 
+          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
 
   Kubernetes-Workflow:
     name: Deploy the k8s workflow 
