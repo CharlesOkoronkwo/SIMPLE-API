@@ -1,4 +1,4 @@
-name: Kubernetes Deployment and Verification
+name: Kubernetes Deployment
 
 on:
   workflow_dispatch:
