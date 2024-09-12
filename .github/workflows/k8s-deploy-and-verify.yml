@@ -52,6 +52,13 @@ jobs:
         env: 
           GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
 
+      - name: Apply Only If Changes Exist
+        working-directory: kubernetes_resource
+        run: terraform apply -auto-approve
+        if: ${{ steps.plan.outputs.changes }} == 'true'
+        env: 
+          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+
   verify:
     name: Verify Deployment
     runs-on: ubuntu-latest
