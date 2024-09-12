@@ -9,6 +9,5 @@ terraform {
 
 provider "kubernetes" {
   # Configuration options
-    config_path    = "~/.kube/config"
-    config_context = "gke_simple-api-434410_us-central1_simple-api"
+  host  = "https://${data.google_container_cluster.cluster.endpoint}"
 }
