@@ -5,9 +5,12 @@ on:
 
 jobs:
   call-reusable-workflow:
-    uses: CharlesOkoronkwo/SIMPLE-API/.github/workflows/reusable-workflow.yml@main
-    with:
-      terraform_version: '1.5.6'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Reusable Workflow
+        uses: CharlesOkoronkwo/SIMPLE-API/.github/workflows/reusable-workflow.yml@main
+        with:
+          terraform_version: '1.5.6'
     env:
       GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       SA_EMAIL: ${{ secrets.SA_EMAIL }}
