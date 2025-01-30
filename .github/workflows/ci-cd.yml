@@ -8,8 +8,9 @@ jobs:
     uses: CharlesOkoronkwo/SIMPLE-API/.github/workflows/reusable-workflow.yml@main
     with:
       terraform_version: '1.5.6'
-      gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
-      sa_email: ${{ secrets.SA_EMAIL }}
-      wif_provider: ${{ secrets.WIF_PROVIDER }}
-      docker_username: ${{ secrets.DOCKER_USERNAME }}
-      docker_password: ${{ secrets.DOCKER_PASSWORD }}
+    env:
+      GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      SA_EMAIL: ${{ secrets.SA_EMAIL }}
+      WIF_PROVIDER: ${{ secrets.WIF_PROVIDER }}
+      DOCKER_USERNAME : ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
