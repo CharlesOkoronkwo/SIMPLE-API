@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+
+# local scratch databases (data/ledger.db is committed on purpose)
+*.db-journal
+*.db-wal
+*.db-shm
+scratch/
+
+# terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
