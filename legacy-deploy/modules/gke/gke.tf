@@ -14,7 +14,7 @@ resource "google_container_cluster" "primary" {
 
   node_config {
     # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
-    service_account = "github-wif@simple-api-434410.iam.gserviceaccount.com"
+    service_account = "your-service-account@your-gcp-project-id.iam.gserviceaccount.com"
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
@@ -28,7 +28,7 @@ resource "google_project_service" "container" {
     service = "container.googleapis.com"
   }
 resource "google_compute_network" "vpc_network" {
-  project                 = "simple-api-434410"
+  project                 = "your-gcp-project-id"
   name                    = "vpc-network"
   auto_create_subnetworks = false
   mtu                     = 1460

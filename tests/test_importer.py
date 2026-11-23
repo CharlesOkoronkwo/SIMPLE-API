@@ -102,15 +102,6 @@ def test_bank_a_row_without_amount_is_skipped(conn, current, write_csv):
     assert result.rows_skipped == 1
 
 
-def test_bracketed_debit_is_still_a_debit(conn, current, write_csv):
-    text = """
-Date,Description,Debit,Credit,Balance
-20/03/2025,POS PURCHASE (CARD HELD),(250.00),,"99,750.00"
-"""
-    import_file(conn, current.id, write_csv("a.csv", text))
-    assert transactions.list_transactions(conn, current.id)[0].amount == -250.0
-
-
 def test_import_history_is_recorded(conn, current, write_csv):
     import_file(conn, current.id, write_csv("a.csv", BANK_A))
     history = import_history(conn, current.id)

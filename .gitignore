@@ -5,7 +5,9 @@ __pycache__/
 venv/
 *.egg-info/
 
-# local scratch databases (data/ledger.db is committed on purpose)
+# local databases and generated test data
+data/*.db
+samples/generated/
 *.db-journal
 *.db-wal
 *.db-shm

@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket  = "tfstateaccount"
+    bucket  = "your-tfstate-bucket"
     prefix  = "terraform/state"
   }
 }
@@ -49,7 +49,7 @@ resource "kubernetes_deployment_v1" "api_deployment" {
 
       spec {
         container {
-          image = "taylorbree/simple-api:latest"
+          image = "your-dockerhub-user/simple-api:latest"
           name  = "simple-api"
 
           port {

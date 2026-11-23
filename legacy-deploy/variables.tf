@@ -1,6 +1,6 @@
 variable "project_id" {
   description = "GCP Project ID"
-  default = "simple-api-434410"
+  default = "your-gcp-project-id"
 }
 
 variable "region" {

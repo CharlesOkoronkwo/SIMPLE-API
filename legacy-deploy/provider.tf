@@ -12,7 +12,7 @@ terraform {
   }
 }
 provider "google" {
-  project     = "simple-api-434410"
+  project     = "your-gcp-project-id"
   region      = var.region
 }
 
@@ -30,6 +30,6 @@ data "google_client_config" "default" {}
 # data "google_container_cluster" "my_cluster" {
 #   name     = "simple-api"
 #   location = "us-central1"
-#   project  = "simple-api-434410"
+#   project  = "your-gcp-project-id"
 # }
 
